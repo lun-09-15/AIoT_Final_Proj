@@ -1,0 +1,21 @@
+flowchart TB
+    START([開始]) --> INIT["固定回放時間與資料視圖<br/>證據清單清空；工具0次；修正0次"]
+    INIT --> PLAN["② Agent理解需求並選下一步"]
+    PLAN --> TYPE{"下一步類型？"}
+    TYPE -->|需要澄清| ASK["⑧ 呈現澄清問題並結束本次處理"]
+    TYPE -->|工具| BUDGET{"工具呼叫少於8次？"}
+    BUDGET -->|是| CALL["工具計數加1<br/>③④⑤檢查契約並執行工具"]
+    CALL --> LOG["⑥ 記錄結果或失敗原因、來源與資料品質"]
+    LOG --> PLAN
+    BUDGET -->|否| SAFE["由已確認證據產生部分結果或限制說明"]
+    TYPE -->|回答草稿| CHECK["⑦ 核對數字、單位、時間、方向與證據"]
+    CHECK --> PASS{"檢查通過？"}
+    PASS -->|是| OUTPUT["⑧ 顯示回答、圖表、證據與限制"]
+    PASS -->|否| REPAIR{"尚未修正過？"}
+    REPAIR -->|是| FIX["修正計數加1<br/>將檢查問題交給Agent；工具上限不重設"]
+    FIX --> PLAN
+    REPAIR -->|否| SAFE
+    TYPE -->|無效動作或模型服務失敗| SAFE
+    SAFE --> OUTPUT
+    ASK --> END([本次處理結束])
+    OUTPUT --> END

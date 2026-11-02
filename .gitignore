@@ -1,0 +1,8 @@
+/references/
+/tmp/
+/docs/figures/
+.env
+.env.*
+!.env.example
+__pycache__/
+~$*
